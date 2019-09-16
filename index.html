@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-scrollto"></script>
+</head>
+
+<body>
+<div id="app">
+    <header>
+        <span class="header__logo">{{displayItems.title}}</span>
+        <span class="header__user_auth">
+      <a :href="displayItems.header.messageUrl" target="_blank">
+        <i class="fas fa-paper-plane"></i>
+      </a>
+    </span>
+    </header>
+    <nav :class="{'nav__open': isOpenNav}">
+    <span class="nav__open_icon" @click="toggleNav" :class="{'nav__opened_icon': isOpenNav}">
+      <i class="fas fa-angle-double-left"></i>
+    </span>
+        <ul>
+            <li><a href="#" v-scroll-to="'#anchor_about'">ABOUT ME</a></li>
+            <li><a href="#" v-scroll-to="'#anchor_history'">PERSONAL HISTORY</a></li>
+            <li v-for="(data, index) in displayItems.works">
+                <a href="#" v-scroll-to="'#anchor_works_' + index">{{data.title}}</a>
+            </li>
+
+        </ul>
+    </nav>
+    <main>
+        <article class="main_visual" :style="{ backgroundImage: 'url(' + displayItems.mainVisual.backgroundImageSrc + ')' }">
+            <div class="main_visual__logo"><img :src="displayItems.mainVisual.logoImageSrc"></div>
+            <!--    <img class="main_visual__logo" src="https://placehold.jp/300x150.png" alt="">-->
+            <!--    <img class="main_visual__logo" src="https://ruura.com/public/img/front_mv_logo.png" alt="">-->
+        </article>
+
+        <article id="anchor_about" class="about" :class="{'_anime_fadeIn': isInScreenArticles[1]}">
+            <h2 class="_lang_ja">
+                <mark class="_marker_yellow">{{displayItems.about.textCatchCopy1}}</mark>
+                <br>
+                <mark class="_marker_yellow">{{displayItems.about.textCatchCopy2}}</mark>
+            </h2>
+            <p class="_lang_ja">{{displayItems.about.textDescription}}
+            </p>
+            <img class="about__image" :src="displayItems.about.imageSrc" alt="">
+        </article>
+
+        <article id="anchor_history" class="history">
+            <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
+                <h2 class="_lang_ja">PERSONAL HISTORY</h2>
+                <h4>ACADEMIC</h4>
+            </div>
+
+            <ul class="history__list">
+                <li v-for=" (data, index) in displayItems.history.academic" :class="{'_anime_fadeIn': isInScreenHistories[index]}">
+                    <div class="history__list__term">
+                        {{data.startDate}} - {{data.endDate}}
+                    </div>
+                    <div class="history__list__name">
+                        {{data.title}}
+                    </div>
+                    <div class="history__list__description">
+                        {{data.description}}
+                    </div>
+                </li>
+            </ul>
+
+            <hr class="_dash_dot_dash">
+
+            <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
+                <h4>QUALIFICATION</h4>
+            </div>
+
+            <ul class="history__list">
+                <li v-for=" (data, index) in displayItems.history.qualification" :class="{'_anime_fadeIn': isInScreenHistories[index]}">
+                    <div class="history__list__term">
+                        {{data.startDate}} - {{data.endDate}}
+                    </div>
+                    <div class="history__list__name">
+                        {{data.title}}
+                    </div>
+                    <div class="history__list__description">
+                        {{data.description}}
+                    </div>
+                </li>
+            </ul>
+
+            <hr class="_dash_dot_dash">
+
+            <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
+                <h4>CAREER</h4>
+            </div>
+
+            <ul class="history__list">
+                <li v-for=" (data, index) in displayItems.history.career" :class="{'_anime_fadeIn': isInScreenHistories[index]}">
+                    <div class="history__list__term">
+                        {{data.startDate}} - {{data.endDate}}
+                    </div>
+                    <div class="history__list__name">
+                        {{data.title}}
+                    </div>
+                    <div class="history__list__description">
+                        {{data.description}}
+                    </div>
+                </li>
+            </ul>
+        </article>
+
+        <article v-for="(data, index) in displayItems.works" :id="'anchor_works_' + index" class="works" :class="{'_anime_fadeIn': isInScreenArticles[index + 3]}">
+            <h2 class="_lang_ja">{{data.title}}</h2>
+            <h4>SUMMARY</h4>
+            <p class="_lang_ja">
+                {{data.summary}}
+            </p>
+
+            <hr class="_dash_dot_dash">
+
+            <h4>FAVORITE WORKS</h4>
+            <div v-for="v in data.favoriteWorks">
+                <h5>{{v.title}}</h5>
+                <div class="_image_box">
+                    <img :src="v.imageSrc" :alt="v.title">
+                </div>
+                <p class="_lang_ja">{{v.description}}</p>
+                <a class="_button_yellow" :href="v.linkUrl">Check it</a>
+            </div>
+
+            <hr class="_dash_dot_dash">
+
+            <h4>GOTTA CATCH SKILL</h4>
+            <dl class="works__skill">
+                <div v-for="v in data.skills" class="works__skill__box">
+                    <dt class="works__skill__icon">
+                        <i :class="'fab ' + v.iconName"></i>
+                    </dt>
+                    <dd>
+                        <div class="works__skill__title">{{v.title}}</div>
+                        <div class="works__skill__bar">
+                            <div :class="'_bar_'+v.color" :style="'width:'+ v.point + '0%'">+{{v.point}}</div>
+                        </div>
+                    </dd>
+                </div>
+            </dl>
+
+        </article>
+    </main>
+
+    <footer>
+        <div class="footer__contents">
+            <h2>Thanks for watching!</h2>
+            <p>I want to do a good job with you.</p>
+            <p>Have a nice life!</p>
+        </div>
+    </footer>
+
+    <div class="background_video">
+    </div>
+</div>
+</body>
+
+<script>
+    // 日本語 英語の切り替え
+    // todo 暫定。あと、使うなら外部化したい。
+    let browserLanguage = function () {
+        let ua = window.navigator.userAgent.toLowerCase();
+        try {
+            // chrome
+            if (ua.indexOf('chrome') !== -1) {
+                return (navigator.languages[0] || navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0, 2);
+            }
+            // それ以外
+            else {
+                return (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0, 2);
+            }
+        } catch (e) {
+            return undefined;
+        }
+    };
+    let lang_ja_list = document.getElementsByClassName("_lang_ja");
+    let lang_en_list = document.getElementsByClassName("_lang_en");
+    if (browserLanguage() === 'ja') {
+        for (let lang_ja of lang_ja_list) {
+            lang_ja.style.display = "block";
+        }
+        for (let lang_en of lang_en_list) {
+            lang_en.style.display = "none";
+        }
+    } else {
+        for (let lang_ja of lang_ja_list) {
+            lang_ja.style.display = "none";
+        }
+        for (let lang_en of lang_en_list) {
+            lang_en.style.display = "block";
+        }
+    }
+</script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            // This displayItems is sample.
+            // Direct Editing or Using API.
+            // If you want to use API, It's good when mounted status.
+            displayItems: {
+                title: "このサイトのタイトル",
+                header: {
+                    // Google Form URL or Your original mail form URL
+                    messageUrl: "http://google.com"
+                },
+                mainVisual:{
+                    logoImageSrc: "https://placehold.jp/300x100.png",
+                    backgroundImageSrc: "https://66.media.tumblr.com/73312b2bbf7d2f12d552dc00e528e2b3/tumblr_oq5lsp45Ji1wq2w3do1_1280.jpg",
+                },
+                about: {
+                    textCatchCopy1: "キャッチコピー一行目",
+                    textCatchCopy2: "キャッチコピー二行目",
+                    textDescription: "自分について書くところ",
+                    imageSrc: "https://placehold.jp/100x100.png"
+                },
+                history: {
+                    academic:[
+                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                    ],
+                    qualification:[
+                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                    ],
+                    career:[
+                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                    ]
+                },
+                works: [
+                    {
+                        title: "AAA株式会社",
+                        summary: "aaaaaaaaaaaa",
+                        favoriteWorks: [
+                            {
+                                title:"test",
+                                imageSrc:"https://placehold.jp/640x320.png",
+                                description: "test",
+                                linkUrl:"http://yahoo.co.jp",
+                            }
+                        ],
+                        skills: [
+                            {
+                                title: "HTML",
+                                iconName: "fa-html5",
+                                color: "red",
+                                // 0 - 10
+                                point: "1",
+                            }
+                        ]
+                    },
+                    {
+                        title: "BBB株式会社",
+                        summary: "bbbbbbbbb",
+                        favoriteWorks: [
+                            {
+                                title:"test",
+                                imageSrc:"https://placehold.jp/640x320.png",
+                                description: "test",
+                                linkUrl:"http://yahoo.co.jp",
+                            }
+                        ],
+                        skills: [
+                            {
+                                title: "HTML",
+                                // Choice in this site.
+                                // https://fontawesome.com/icons?d=gallery
+                                iconName: "fa-html5",
+                                color: "red",
+                                // 0 - 10
+                                point: "1",
+                            }
+                        ]
+                    },
+                ]
+            },
+            isOpenNav: false,
+            scrollY: 0,
+            windowHeight: 0,
+            articles: [],
+            histories: []
+        },
+        methods: {
+            toggleNav() {
+                this.isOpenNav = !this.isOpenNav;
+            },
+            scrollToId() {
+                let cancelScroll = this.$scrollTo(element, duration, options)
+            },
+            setScrollY() {
+                this.scrollY = window.scrollY;
+            },
+            setWindowHeight() {
+                this.windowHeight = window.innerHeight;
+            },
+            setArticles() {
+                this.articles = [...this.$el.querySelectorAll("article")];
+            },
+            setHistories() {
+                this.histories = [...this.$el.querySelectorAll(".history__list li")];
+            },
+        },
+        computed: {
+            isInScreenArticles() {
+                return this.articles.map(element => element.offsetTop < this.scrollY + this.windowHeight);
+            },
+            isInScreenHistories() {
+                return this.histories.map(element => element.offsetTop < this.scrollY + this.windowHeight);
+            },
+        },
+        mounted() {
+            // スクロールイベントの取得
+            window.addEventListener('scroll', this.setScrollY);
+            // ウィンドウの高さを取得
+            this.setWindowHeight();
+            window.addEventListener('resize', this.setWindowHeight);
+            // 要素取得
+            this.setArticles();
+            this.setHistories();
+
+            // todo apiでdisplayItemsをとってきてセットしたい
+            // 何も帰ってこないときはデフォでいいや。
+            this.displayItems.about.textCatchCopy1 = "test"
+        },
+    })
+</script>
+
+<style lang="scss">
+    /* reset CSS */
+    @import url('http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css');
+    /* web font */
+    @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
+    /* web icon */
+    @import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
+
+    html {
+        font-family: 'Montserrat', 'Noto Sans JP', "游ゴシック Medium", YuGothic, YuGothicM, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, sans-serif;
+        font-size: 16px;
+        color: #666;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    * {
+        box-sizing: border-box;
+        letter-spacing: 0.1em;
+        line-height: 1.5em;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    h2 {
+        font-size: 1.5rem
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    h4 {
+        font-size: 1.25rem
+    }
+
+    h5 {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    h6 {
+        font-size: 1rem
+    }
+
+    p {
+        font-size: 0.875rem
+    }
+
+    a {
+        text-decoration: none;
+    }
+    a:visited {
+        color: #ccc;
+    }
+
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        text-align: center;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        margin-bottom: 1.25em;
+    }
+
+    span {
+        display: inline-block;
+    }
+
+    ._card {
+        width: 320px;
+        max-width: 100%;
+        background: #fff;
+        border: 4px solid #F5ED71;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    mark._marker_yellow {
+        background: rgba(0, 0, 0, 0) linear-gradient(transparent 60%, #F5ED71 0%) repeat scroll 0 0;
+    }
+
+    /* _buttonクラスを作って継承したい */
+
+    ._button_red {
+        display: block;
+        width: 160px;
+        margin: 16px auto 32px;
+        text-align: center;
+        background: #F58A8D;
+        padding: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    ._button_yellow {
+        display: block;
+        width: 160px;
+        margin: 16px auto 32px;
+        text-align: center;
+        background: #F5ED71;
+        padding: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    ._button_blue {
+        display: block;
+        width: 160px;
+        margin: 16px auto 32px;
+        text-align: center;
+        background: #67B2FA;
+        padding: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    ._button_green {
+        display: block;
+        width: 160px;
+        margin: 16px auto 32px;
+        text-align: center;
+        background: #7FDFCD;
+        padding: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    ._button_orange {
+        display: block;
+        width: 160px;
+        margin: 16px auto 32px;
+        text-align: center;
+        background: #FAB953;
+        padding: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    ._image_box {
+        font-size: 0;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    ._image_box img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /*　動的に切り替え　*/
+
+    ._lang_ja {
+        display: block;
+    }
+
+    ._lang_en {
+        display: none;
+    }
+
+    hr._dash_dot_dash {
+        position: relative;
+        display: block;
+        height: 1px;
+        background: #ccc;
+        border: 0;
+        width: 64px;
+        margin: 40px auto;
+        overflow: inherit;
+    }
+
+    hr._dash_dot_dash:after,
+    hr._dash_dot_dash:before {
+        content: "";
+        /*display: block;*/
+        display: none;
+        height: 3px;
+        width: 3px;
+        /*transform: rotate(45deg);*/
+        border-radius: 100%;
+        background: #ccc;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    hr._dash_dot_dash:after {
+        right: -16px
+    }
+
+    hr._dash_dot_dash:before {
+        left: -16px
+    }
+
+    header {
+        position: fixed;
+        width: 100%;
+        height: 48px;
+        z-index: 1000;
+        /*    background-color: rgba(255,255,255,0.25);*/
+    }
+
+    .header__logo {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        padding: 0 8px;
+        height: 32px;
+        border-radius: 4px;
+        background: #F58A8D;
+        margin: auto;
+        text-align: center;
+        line-height: 32px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .header__user_auth {
+        position: absolute;
+        top: 8px;
+        right: 48px;
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        background: #F58A8D;
+        line-height: 32px;
+        text-align: center;
+        color: #fff;
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        right: -240px;
+        width: 240px;
+        height: 100vh;
+        background: #7FDFCD;
+        z-index: 1020;
+        transition: right 0.5s ease 0s;
+        padding: 48px 8px 8px;
+    }
+
+    nav li {
+        text-align: center;
+    }
+    nav li:after {
+        content: "";
+        display: block;
+        width: 16px;
+        height: 1px;
+        background: #666;
+        margin: 0 auto;
+    }
+
+    nav li a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        color: #666;
+        font-size: 0.5rem;
+        padding: 16px 0;
+
+    }
+
+    nav.nav__open {
+        right: 0;
+    }
+
+    .nav__open_icon {
+        position: absolute;
+        top: 8px;
+        left: -40px;
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        background: #F58A8D;
+        line-height: 32px;
+        text-align: center;
+        color: #fff;
+        transition: background 0.5s ease 0s;
+    }
+
+    .nav__opened_icon {
+        background: #7FDFCD;
+    }
+
+    .nav__open_icon i {
+        transition: transform 0.5s ease 0s;
+    }
+    .nav__opened_icon i {
+        transform: rotate(180deg);
+    }
+
+    main article:not(:nth-of-type(1)) {
+        padding: 64px 24px;
+        background: #fff;
+    }
+
+    main article:nth-of-type(2n-1) {
+        background: #f6f6f6;
+    }
+
+    main article p {
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    main article.main_visual {
+        background-size: cover;
+    }
+
+    .main_visual {
+        position: relative;
+        height: 100vh;
+        min-height: 300px;
+        z-index: 1010;
+    }
+
+    .main_visual__logo {
+        height: 100px;
+        font-size: 24px;
+        text-align: center;
+        line-height: 48px;
+        color: #FFF;
+        font-weight: bold;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        margin: auto;
+        animation-name: main_visual__logo;
+        animation-duration: 3s;
+        animation-timing-function: ease-in-out;
+    }
+
+    ._anime_fadeIn * {
+        animation-name: _fadeIn;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
+    }
+
+    @keyframes _fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes main_visual__logo {
+        0% {
+            opacity: 0;
+            bottom: 24px;
+        }
+        80% {
+            bottom: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .about {
+    }
+
+    .about__image {
+        display: block;
+        margin: auto;
+        border-radius: 100px;
+    }
+
+    .history__list {
+        max-width: 640px;
+        padding-left: 16px;
+        margin: 0 auto 32px auto;
+        border-left: 1px solid #F58A8D;
+        list-style: none;
+    }
+
+    .history__list:last-of-type {
+        margin-bottom: 0;
+    }
+
+    .history__list li {
+        align-items: center;
+        padding: 8px 0;
+    }
+
+    .history__list__name {
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1.2em;
+        margin-right: 8px;
+        margin-bottom: 8px;
+    }
+
+    .history__list__term {
+        font-size: 0.75rem;
+        font-weight: bold;
+        line-height: 1.2em;
+        margin-bottom: 8px;
+        position: relative;
+    }
+
+    .history__list__term:before {
+        content: "";
+        position: absolute;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: -20px;
+        border-radius: 100%;
+        display: block;
+        width: 7px;
+        height: 7px;
+        background: #F58A8D;
+    }
+
+    .history__list__description {
+        font-size: 0.75rem;
+        margin-bottom: 8px;
+    }
+
+    .history__list__button {
+        width: 64px;
+        margin: 0 auto;
+        padding: 4px;
+        text-align: center;
+        border: 1px solid #666;
+        border-radius: 4px;
+        /*background: #F5EC70;*/
+        font-size: 0.5rem;
+    }
+
+    /*  works*/
+
+    .works__skill {
+        max-width: 640px;
+        margin-right: auto;
+        margin-left: auto;
+        padding: 24px;
+        border: 1px solid #666;
+        border-radius: 8px;
+    }
+
+    .works__skill__box {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .works__skill__box:last-of-type {
+        margin-bottom: 0;
+    }
+
+    .works__skill__box dt {
+        width: 64px;
+        height: 48px;
+        line-height: 48px;
+        text-align: center;
+    }
+
+    .works__skill__box dd {
+        width: 100%;
+    }
+
+    footer {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+    }
+
+    .footer__contents {
+        position: absolute;
+        width: 420px;
+        height: 80px;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        text-align: center;
+        color: #fff!important;
+    }
+
+    .background_video {
+        background: #67B2FA;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        z-index: -10;
+    }
+
+    .works__skill__title {
+        font-size: 0.5rem;
+        font-weight: bold;
+        line-height: 1em;
+        margin-bottom: 4px;
+    }
+
+    .works__skill__icon {
+        font-size: 40px;
+        line-height: 1em;
+        margin: auto 10px auto 0;
+    }
+
+    .works__skill__bar {
+        width: 100%;
+    }
+
+    ._bar_red {
+        height: 24px;
+        background: #F58A8D;
+        color: #fff;
+        line-height: 24px;
+        text-align: center;
+        margin-bottom: 4px;
+        font-size: 0.75rem;
+    }
+
+    ._bar_blue {
+        height: 24px;
+        background: #67B2FA;
+        color: #fff;
+        line-height: 24px;
+        text-align: center;
+        margin-bottom: 4px;
+        font-size: 0.75rem;
+    }
+
+    ._bar_green {
+        height: 24px;
+        background: #7FDFCD;
+        color: #fff;
+        line-height: 24px;
+        text-align: center;
+        margin-bottom: 4px;
+        font-size: 0.75rem;
+    }
+
+    ._bar_orange {
+        height: 24px;
+        background: #FAB953;
+        color: #fff;
+        line-height: 24px;
+        text-align: center;
+        margin-bottom: 4px;
+        font-size: 0.75rem;
+    }
+
+</style>
+</html>
