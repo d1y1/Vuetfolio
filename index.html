@@ -3,282 +3,350 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>test</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>PortFolio</title>
+    <meta name="ROBOTS" content="NOINDEX,NOFOLLOW">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-scrollto"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.12.0/js/md5.min.js"></script>
 </head>
 
 <body>
 <div id="app">
-    <header>
-        <span class="header__logo">{{displayItems.title}}</span>
-        <span class="header__user_auth">
-      <a :href="displayItems.header.messageUrl" target="_blank">
-        <i class="fas fa-paper-plane"></i>
-      </a>
-    </span>
-    </header>
-    <nav :class="{'nav__open': isOpenNav}">
+    <div v-if="isShownAuth">
+        <div class="auth">
+            <div class="auth__wrapper">
+                <div class="auth__logo">
+                    <i class="fas fa-compact-disc"></i>
+                </div>
+                <p>認証コードを入力してください。</p>
+                <div class="auth__form">
+                    <form>
+                        <label>
+                            CODE <input v-model="auth.code" name="code" required type="password" placeholder="please enter here.">
+                        </label>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div v-if="!isShownAuth">
+        <header>
+            <span class="header__logo">{{displayItems.header.title}}</span>
+            <span class="header__user_auth">
+                <a :href="displayItems.header.messageUrl" target="_blank">
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+            </span>
+        </header>
+        <nav :class="{'nav__open': isOpenNav}">
     <span class="nav__open_icon" @click="toggleNav" :class="{'nav__opened_icon': isOpenNav}">
       <i class="fas fa-angle-double-left"></i>
     </span>
-        <ul>
-            <li><a href="#" v-scroll-to="'#anchor_about'">ABOUT ME</a></li>
-            <li><a href="#" v-scroll-to="'#anchor_history'">PERSONAL HISTORY</a></li>
-            <li v-for="(data, index) in displayItems.works">
-                <a href="#" v-scroll-to="'#anchor_works_' + index">{{data.title}}</a>
-            </li>
-
-        </ul>
-    </nav>
-    <main>
-        <article class="main_visual" :style="{ backgroundImage: 'url(' + displayItems.mainVisual.backgroundImageSrc + ')' }">
-            <div class="main_visual__logo"><img :src="displayItems.mainVisual.logoImageSrc"></div>
-            <!--    <img class="main_visual__logo" src="https://placehold.jp/300x150.png" alt="">-->
-            <!--    <img class="main_visual__logo" src="https://ruura.com/public/img/front_mv_logo.png" alt="">-->
-        </article>
-
-        <article id="anchor_about" class="about" :class="{'_anime_fadeIn': isInScreenArticles[1]}">
-            <h2 class="_lang_ja">
-                <mark class="_marker_yellow">{{displayItems.about.textCatchCopy1}}</mark>
-                <br>
-                <mark class="_marker_yellow">{{displayItems.about.textCatchCopy2}}</mark>
-            </h2>
-            <p class="_lang_ja">{{displayItems.about.textDescription}}
-            </p>
-            <img class="about__image" :src="displayItems.about.imageSrc" alt="">
-        </article>
-
-        <article id="anchor_history" class="history">
-            <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
-                <h2 class="_lang_ja">PERSONAL HISTORY</h2>
-                <h4>ACADEMIC</h4>
-            </div>
-
-            <ul class="history__list">
-                <li v-for=" (data, index) in displayItems.history.academic" :class="{'_anime_fadeIn': isInScreenHistories[index]}">
-                    <div class="history__list__term">
-                        {{data.startDate}} - {{data.endDate}}
-                    </div>
-                    <div class="history__list__name">
-                        {{data.title}}
-                    </div>
-                    <div class="history__list__description">
-                        {{data.description}}
-                    </div>
+            <ul>
+                <li><a href="#" v-scroll-to="'#anchor_about'">ABOUT ME</a></li>
+                <li><a href="#" v-scroll-to="'#anchor_history'">PERSONAL HISTORY</a></li>
+                <li v-for="(data, index) in displayItems.works">
+                    <a href="#" v-scroll-to="'#anchor_works_' + index">{{data.title}}</a>
                 </li>
+
             </ul>
-
-            <hr class="_dash_dot_dash">
-
-            <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
-                <h4>QUALIFICATION</h4>
-            </div>
-
-            <ul class="history__list">
-                <li v-for=" (data, index) in displayItems.history.qualification" :class="{'_anime_fadeIn': isInScreenHistories[index]}">
-                    <div class="history__list__term">
-                        {{data.startDate}} - {{data.endDate}}
-                    </div>
-                    <div class="history__list__name">
-                        {{data.title}}
-                    </div>
-                    <div class="history__list__description">
-                        {{data.description}}
-                    </div>
-                </li>
-            </ul>
-
-            <hr class="_dash_dot_dash">
-
-            <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
-                <h4>CAREER</h4>
-            </div>
-
-            <ul class="history__list">
-                <li v-for=" (data, index) in displayItems.history.career" :class="{'_anime_fadeIn': isInScreenHistories[index]}">
-                    <div class="history__list__term">
-                        {{data.startDate}} - {{data.endDate}}
-                    </div>
-                    <div class="history__list__name">
-                        {{data.title}}
-                    </div>
-                    <div class="history__list__description">
-                        {{data.description}}
-                    </div>
-                </li>
-            </ul>
-        </article>
-
-        <article v-for="(data, index) in displayItems.works" :id="'anchor_works_' + index" class="works" :class="{'_anime_fadeIn': isInScreenArticles[index + 3]}">
-            <h2 class="_lang_ja">{{data.title}}</h2>
-            <h4>SUMMARY</h4>
-            <p class="_lang_ja">
-                {{data.summary}}
-            </p>
-
-            <hr class="_dash_dot_dash">
-
-            <h4>FAVORITE WORKS</h4>
-            <div v-for="v in data.favoriteWorks">
-                <h5>{{v.title}}</h5>
-                <div class="_image_box">
-                    <img :src="v.imageSrc" :alt="v.title">
+        </nav>
+        <main>
+            <article class="main_visual"
+                     :style="{ backgroundImage: 'url(' + displayItems.mainVisual.backgroundImageSrc + ')' }">
+                <div class="main_visual__logo">
+                    <img :src="displayItems.mainVisual.logoImageSrc">
                 </div>
-                <p class="_lang_ja">{{v.description}}</p>
-                <a class="_button_yellow" :href="v.linkUrl">Check it</a>
-            </div>
+            </article>
 
-            <hr class="_dash_dot_dash">
+            <article id="anchor_about" class="about" :class="{'_anime_fadeIn': isInScreenArticles[1]}">
+                <h2 class="_lang_ja">
+                    <mark class="_marker_yellow">{{displayItems.about.textCatchCopy1}}</mark>
+                    <br>
+                    <mark class="_marker_yellow">{{displayItems.about.textCatchCopy2}}</mark>
+                </h2>
+                <p class="_lang_ja">{{displayItems.about.textDescription}}
+                </p>
+                <img class="about__image" :src="displayItems.about.imageSrc" alt="">
+            </article>
 
-            <h4>GOTTA CATCH SKILL</h4>
-            <dl class="works__skill">
-                <div v-for="v in data.skills" class="works__skill__box">
-                    <dt class="works__skill__icon">
-                        <i :class="'fab ' + v.iconName"></i>
-                    </dt>
-                    <dd>
-                        <div class="works__skill__title">{{v.title}}</div>
-                        <div class="works__skill__bar">
-                            <div :class="'_bar_'+v.color" :style="'width:'+ v.point + '0%'">+{{v.point}}</div>
+            <article id="anchor_history" class="history">
+                <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
+                    <h2 class="_lang_ja">PERSONAL HISTORY</h2>
+                    <h4>ACADEMIC</h4>
+                </div>
+
+                <ul class="history__list">
+                    <li v-for=" (data, index) in displayItems.history.academic"
+                        :class="{'_anime_fadeIn': isInScreenHistories[index]}">
+                        <div class="history__list__term">
+                            {{data.startDate}} - {{data.endDate}}
                         </div>
-                    </dd>
+                        <div class="history__list__name">
+                            {{data.title}}
+                        </div>
+                        <div class="history__list__description">
+                            {{data.description}}
+                        </div>
+                    </li>
+                </ul>
+
+                <hr class="_dash_dot_dash">
+
+                <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
+                    <h4>QUALIFICATION</h4>
                 </div>
-            </dl>
 
-        </article>
-    </main>
+                <ul class="history__list">
+                    <li v-for=" (data, index) in displayItems.history.qualification"
+                        :class="{'_anime_fadeIn': isInScreenHistories[index]}">
+                        <div class="history__list__term">
+                            {{data.startDate}} - {{data.endDate}}
+                        </div>
+                        <div class="history__list__name">
+                            {{data.title}}
+                        </div>
+                        <div class="history__list__description">
+                            {{data.description}}
+                        </div>
+                    </li>
+                </ul>
 
-    <footer>
-        <div class="footer__contents">
-            <h2>Thanks for watching!</h2>
-            <p>I want to do a good job with you.</p>
-            <p>Have a nice life!</p>
+                <hr class="_dash_dot_dash">
+
+                <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
+                    <h4>CAREER</h4>
+                </div>
+
+                <ul class="history__list">
+                    <li v-for=" (data, index) in displayItems.history.career"
+                        :class="{'_anime_fadeIn': isInScreenHistories[index]}">
+                        <div class="history__list__term">
+                            {{data.startDate}} - {{data.endDate}}
+                        </div>
+                        <div class="history__list__name">
+                            {{data.title}}
+                        </div>
+                        <div class="history__list__description">
+                            {{data.description}}
+                        </div>
+                    </li>
+                </ul>
+
+                <hr class="_dash_dot_dash">
+
+                <div :class="{'_anime_fadeIn': isInScreenArticles[2]}">
+                    <h4>AWARD</h4>
+                </div>
+
+                <ul class="history__list">
+                    <li v-for=" (data, index) in displayItems.history.award"
+                        :class="{'_anime_fadeIn': isInScreenHistories[index]}">
+                        <div class="history__list__term">
+                            {{data.startDate}} - {{data.endDate}}
+                        </div>
+                        <div class="history__list__name">
+                            {{data.title}}
+                        </div>
+                        <div class="history__list__description">
+                            {{data.description}}
+                        </div>
+                    </li>
+                </ul>
+            </article>
+
+            <article v-for="(data, index) in displayItems.works" :id="'anchor_works_' + index" class="works"
+                     :class="{'_anime_fadeIn': isInScreenArticles[index + 3]}">
+                <h2 class="_lang_ja">{{data.title}}</h2>
+
+                <!-- TODO: 期間を入れたい-->
+                <h4>SUMMARY</h4>
+
+                <p class="_lang_ja">{{data.summary}}</p>
+
+                <p class="works__period">{{data.startDate}} - {{data.endDate}}</p>
+                <div class="_tags">
+                    <div v-for="tag in data.tags" class="_tag">{{tag}}</div>
+                </div>
+
+                <div v-if="data.favoriteWorks.length">
+                    <hr class="_dash_dot_dash">
+                    
+                    <!-- TODO: favalite thingsに文言を変更するか検討 -->
+                    <h4>FAVORITE WORKS</h4>
+                    <div v-for="v in data.favoriteWorks">
+                        <h5>{{v.title}}</h5>
+                        <div class="_image_box">
+                            <img :src="v.imageSrc" :alt="v.title">
+                        </div>
+                        <p class="_lang_ja">{{v.description}}</p>
+                        <a class="_button_yellow" v-if="v.linkUrl" :href="v.linkUrl" target="_blank">Check it</a>
+                    </div>
+                </div>
+
+                <div v-if="data.skills.length">
+                    <hr class="_dash_dot_dash">
+                    <h4>GOTTA CATCH SKILL</h4>
+                    <dl class="works__skill">
+                        <div v-for="v in data.skills" class="works__skill__box">
+                            <dt class="works__skill__icon">
+                                <i :class="v.iconName"></i>
+                            </dt>
+                            <dd>
+                                <div class="works__skill__title">{{v.title}}</div>
+                                <div class="works__skill__bar">
+                                    <div :class="'_bar_'+v.color" :style="'width:'+ v.point + '0%'">+{{v.point}}</div>
+                                </div>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+
+            </article>
+        </main>
+        <footer>
+            <div class="footer__contents">
+                <h2>Thanks for watching!</h2>
+                <p>I want to do a good job with you.</p>
+                <p>Have a nice life!</p>
+            </div>
+        </footer>
+        <div class="background_video">
         </div>
-    </footer>
-
-    <div class="background_video">
     </div>
 </div>
 </body>
 
 <script>
-    // 日本語 英語の切り替え
-    // todo 暫定。あと、使うなら外部化したい。
-    let browserLanguage = function () {
-        let ua = window.navigator.userAgent.toLowerCase();
-        try {
-            // chrome
-            if (ua.indexOf('chrome') !== -1) {
-                return (navigator.languages[0] || navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0, 2);
-            }
-            // それ以外
-            else {
-                return (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0, 2);
-            }
-        } catch (e) {
-            return undefined;
-        }
-    };
-    let lang_ja_list = document.getElementsByClassName("_lang_ja");
-    let lang_en_list = document.getElementsByClassName("_lang_en");
-    if (browserLanguage() === 'ja') {
-        for (let lang_ja of lang_ja_list) {
-            lang_ja.style.display = "block";
-        }
-        for (let lang_en of lang_en_list) {
-            lang_en.style.display = "none";
-        }
-    } else {
-        for (let lang_ja of lang_ja_list) {
-            lang_ja.style.display = "none";
-        }
-        for (let lang_en of lang_en_list) {
-            lang_en.style.display = "block";
-        }
-    }
+
 </script>
 <script>
     new Vue({
         el: '#app',
         data: {
-            // This displayItems is sample.
-            // Direct Editing or Using API.
-            // If you want to use API, It's good when mounted status.
+            auth: {
+                // NOTE: 最低限以下のセキュリティ程度なので個人情報にはきをつけてください。
+                enable: true,
+                jsonUrl: "https://d1y1.github.io/myPortfolio/displayItems.json",
+                trueCode: "9990775155c3518a0d7917f7780b24aa",
+                code: "",
+            },
             displayItems: {
-                title: "このサイトのタイトル",
                 header: {
-                    // Google Form URL or Your original mail form URL
-                    messageUrl: "http://google.com"
+                    title: "myPortfolio",
+                    // google formで問い合わせフォームを作ると良いと手軽だと思う。
+                    // formを作ったら[ 送信 ]ボタン押すとリンクが生成されるのでそれを記入
+                    messageUrl: "https://www.google.com/forms/about/"
                 },
-                mainVisual:{
-                    logoImageSrc: "https://placehold.jp/300x100.png",
+                mainVisual: {
+                    logoImageSrc: "images/mainVisual.png",
                     backgroundImageSrc: "https://66.media.tumblr.com/73312b2bbf7d2f12d552dc00e528e2b3/tumblr_oq5lsp45Ji1wq2w3do1_1280.jpg",
                 },
                 about: {
-                    textCatchCopy1: "キャッチコピー一行目",
-                    textCatchCopy2: "キャッチコピー二行目",
-                    textDescription: "自分について書くところ",
-                    imageSrc: "https://placehold.jp/100x100.png"
+                    // 自分について各部分です。
+                    // （※個人情報である名前や生年月日を含めるか検討中）
+                    // 趣味とかをかく乱はあってもいいかもしれないです。
+                    textCatchCopy1: "キャッチコピー1行目",
+                    textCatchCopy2: "キャッチコピー2行目",
+                    textDescription: "なぜそのキャッチコピーしたか、自分を説明する感じでちょっと長めに書くとそれっぽく見える",
+                    // 自分の顔写真とかアイコンを配置しましょう。
+                    imageSrc: "https://yt3.ggpht.com/a-/AAuE7mCGUusZhxK549trk_myBdNMkS1GMzoUxwb5ordMcQ=s288-c-k-c0xffffffff-no-rj-mo"
                 },
                 history: {
-                    academic:[
-                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
-                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                    academic: [
+                        // 学歴
+                        {startDate: "20xx.4", endDate: "20xx.3", title: "AAA大学", description: "aaa科に所属"},
+                        {startDate: "20xx.4", endDate: "20xx.3", title: "BBB専門学校", description: "bbb科に所属"},
                     ],
-                    qualification:[
-                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
-                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                    qualification: [
+                        // 資格取得歴
+                        {startDate: "20xx.3", endDate: "", title: "CCC認定資格", description: ""},
+                        {startDate: "20xx.7", endDate: "", title: "DDD認定資格", description: ""},
                     ],
-                    career:[
-                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
-                        {startDate: "2000.1", endDate: "2000.1", title: "test", description: "testtest"},
+                    career: [
+                        // 職歴
+                        {
+                            startDate: "20xx.4",
+                            endDate: "20xx.3",
+                            title: "株式会社EEE",
+                            description: "WEBデザインナーとして所属。自分がなにに携わっていたかを完結に書くといいかも"
+                        },
+                        {
+                            startDate: "20xx.11",
+                            endDate: "",
+                            title: "FFF有限会社",
+                            description: "Linuxエンジニアとして所属。経験した内容を書いてもいいかも"
+                        },
+                    ],
+                    award: [
+                        // 受賞歴
+                        {startDate: "20xx.9", endDate: "", title: "GGG賞", description: "佳作を受賞(titleにまとめて書いてココは空でもいいかもね。)"},
                     ]
                 },
                 works: [
+                    // 会社ごとに書いてもいいですし、プロジェクトごとに書いてもいいと思います。
                     {
-                        title: "AAA株式会社",
-                        summary: "aaaaaaaaaaaa",
+                        title: "株式会社EEE",
+                        summary: "会社やプロジェクトに関しての概要をちょっと長めに書くとそれっぽくみえると思います。",
+                        startDate: "2013.4",
+                        endDate: "2015.3",
+                        tags: ["単語", "ごとに", "配列で", "複数個", "書くと", "いいよ", "PhotoShop", "とか", "構築", "とか", "いろんなな", "関わるワードを", "書こう"],
                         favoriteWorks: [
                             {
-                                title:"test",
-                                imageSrc:"https://placehold.jp/640x320.png",
-                                description: "test",
-                                linkUrl:"http://yahoo.co.jp",
+                                title: "デザインテンプレート化",
+                                imageSrc: "https://placehold.jp/640x320.png",
+                                description: "さらに掘り下げて自分のアピールしたい部分にフォーカスしましょう！がんばったところとか、自分だけで完成までもっていったものとか。画像を貼れるので絵力があるものがよいかと思うよ。",
+                                linkUrl: "http://yahoo.co.jp",
                             }
                         ],
                         skills: [
+                            // このプロジェクト、会社単位で自分の得たスキルをまとめます。
+                            // readmeを見たほうがわかりやすいかもです。
+                            {
+                                title: "linux",
+                                iconName: "fab fa-linux",
+                                color: "red",
+                                point: "6",
+                            },
                             {
                                 title: "HTML",
-                                iconName: "fa-html5",
-                                color: "red",
-                                // 0 - 10
-                                point: "1",
-                            }
+                                iconName: "fab fa-html5",
+                                color: "blue",
+                                point: "3",
+                            },
                         ]
                     },
                     {
-                        title: "BBB株式会社",
-                        summary: "bbbbbbbbb",
+                        title: "FFF有限会社",
+                        summary: "会社やプロジェクトに関しての概要をちょっと長めに書くとそれっぽくみえると思います。",
+                        startDate: "2013.4",
+                        endDate: "2015.3",
+                        tags: ["単語", "ごとに", "配列で", "複数個", "書くと", "いいよ", "PhotoShop", "とか", "構築", "とか", "いろんなな", "関わるワードを", "書こう"],
                         favoriteWorks: [
                             {
-                                title:"test",
-                                imageSrc:"https://placehold.jp/640x320.png",
-                                description: "test",
-                                linkUrl:"http://yahoo.co.jp",
+                                title: "デザインテンプレート化",
+                                imageSrc: "https://placehold.jp/640x320.png",
+                                description: "さらに掘り下げて自分のアピールしたい部分にフォーカスしましょう！がんばったところとか、自分だけで完成までもっていったものとか。画像を貼れるので絵力があるものがよいかと思うよ。",
+                                linkUrl: "http://yahoo.co.jp",
                             }
                         ],
                         skills: [
+                            // このプロジェクト、会社単位で自分の得たスキルをまとめます。
+                            // readmeを見たほうがわかりやすいかもです。
+                            {
+                                title: "Linux",
+                                iconName: "fab fa-linux",
+                                color: "red",
+                                point: "6",
+                            },
                             {
                                 title: "HTML",
-                                // Choice in this site.
-                                // https://fontawesome.com/icons?d=gallery
-                                iconName: "fa-html5",
-                                color: "red",
-                                // 0 - 10
-                                point: "1",
-                            }
+                                iconName: "fab fa-html5",
+                                color: "blue",
+                                point: "3",
+                            },
                         ]
                     },
                 ]
@@ -308,8 +376,34 @@
             setHistories() {
                 this.histories = [...this.$el.querySelectorAll(".history__list li")];
             },
+            setWindowInfo() {
+                // スクロールイベントの取得
+                window.addEventListener('scroll', this.setScrollY);
+                // ウィンドウの高さを取得
+                this.setWindowHeight();
+                window.addEventListener('resize', this.setWindowHeight);
+                // 要素取得
+                this.setArticles();
+                this.setHistories();
+            },
+            checkAuth() {
+                return md5(this.auth.code) === this.auth.trueCode
+            },
         },
         computed: {
+            isShownAuth() {
+                if (!this.auth.enable) {
+                    return false
+                }
+                if (this.checkAuth()) {
+                    axios.get(this.auth.jsonUrl)
+                        .then( response => {
+                                this.displayItems = response.data
+                            }
+                        )
+                }
+                return this.auth.enable && !this.checkAuth()
+            },
             isInScreenArticles() {
                 return this.articles.map(element => element.offsetTop < this.scrollY + this.windowHeight);
             },
@@ -318,25 +412,14 @@
             },
         },
         mounted() {
-            // スクロールイベントの取得
-            window.addEventListener('scroll', this.setScrollY);
-            // ウィンドウの高さを取得
-            this.setWindowHeight();
-            window.addEventListener('resize', this.setWindowHeight);
-            // 要素取得
-            this.setArticles();
-            this.setHistories();
-
-            // todo apiでdisplayItemsをとってきてセットしたい
-            // 何も帰ってこないときはデフォでいいや。
-            this.displayItems.about.textCatchCopy1 = "test"
+            this.setWindowInfo();
         },
     })
 </script>
 
 <style lang="scss">
     /* reset CSS */
-    @import url('http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css');
     /* web font */
     @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
     @import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
@@ -394,8 +477,13 @@
     a {
         text-decoration: none;
     }
+
+    a:link {
+        color: inherit;
+    }
+
     a:visited {
-        color: #ccc;
+        color: inherit;
     }
 
 
@@ -406,6 +494,7 @@
     h5,
     h6 {
         text-align: center;
+        line-height: 1.5em;
     }
 
     h1,
@@ -499,7 +588,8 @@
     }
 
     ._image_box img {
-        max-width: 100%;
+        width: 100%;
+        max-width: 640px;
         height: auto;
     }
 
@@ -546,6 +636,76 @@
 
     hr._dash_dot_dash:before {
         left: -16px
+    }
+
+    .auth {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background: linear-gradient(-135deg, #7FDFCD, #67B2FA);
+    }
+    .auth__wrapper {
+        color: #FFF;
+        width: 240px;
+        /*border: 1px solid #fff;*/
+    }
+    .auth__logo {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #fff;
+        border-radius: 100px;
+        margin: 0 auto 64px;
+        position: relative;
+    }
+    .auth__logo i {
+        position: absolute;
+        width: 38px;
+        height: 40px;
+        font-size: 40px;
+        text-align: center;
+        margin: auto;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+
+    }
+    .auth__form {
+        text-align: center;
+    }
+    .auth__form input[type="password"] {
+        width: 100%;
+        height: 40px;
+        border: none;
+        border-bottom: 1px solid #fff;
+        background: none;
+        margin-bottom: 32px;
+        text-align: center;
+        color: #fff;
+        /* NOTE: iphoneでのズーム防止 */
+        font-size: 16px;
+    }
+    .auth__form input::placeholder {
+        color: #fff;
+        font-size: 12px;
+    }
+    ._button_white {
+        display: block;
+        width: 100%;
+        margin: 16px auto 0;
+        text-align: center;
+        background: #FFF;
+        padding: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+    ._button_white span {
+        /*background: linear-gradient(-135deg, #eee, #ccc, #eee);*/
+        background: #aaa;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     header {
@@ -599,6 +759,7 @@
     nav li {
         text-align: center;
     }
+
     nav li:after {
         content: "";
         display: block;
@@ -616,7 +777,6 @@
         color: #666;
         font-size: 0.5rem;
         padding: 16px 0;
-
     }
 
     nav.nav__open {
@@ -644,6 +804,7 @@
     .nav__open_icon i {
         transition: transform 0.5s ease 0s;
     }
+
     .nav__opened_icon i {
         transform: rotate(180deg);
     }
@@ -675,6 +836,7 @@
     }
 
     .main_visual__logo {
+        width: 250px;
         height: 100px;
         font-size: 24px;
         text-align: center;
@@ -690,6 +852,10 @@
         animation-name: main_visual__logo;
         animation-duration: 3s;
         animation-timing-function: ease-in-out;
+    }
+    .main_visual__logo img {
+        width: 100%;
+        height: auto;
     }
 
     ._anime_fadeIn * {
@@ -727,6 +893,9 @@
         display: block;
         margin: auto;
         border-radius: 100px;
+        width: 100px;
+        height: auto;
+        border: 2px solid #67B2FA;
     }
 
     .history__list {
@@ -794,6 +963,10 @@
 
     /*  works*/
 
+    .works__period {
+        text-align: center;
+    }
+
     .works__skill {
         max-width: 640px;
         margin-right: auto;
@@ -824,6 +997,26 @@
         width: 100%;
     }
 
+    ._tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    ._tag {
+        min-width: 32px;
+        text-align: center;
+        font-size: 10px;
+        background: #7FDFCD;
+        color: #fff;
+        font-weight: bold;
+        padding: 4px 8px;
+        margin: 0 4px 4px 0;
+        border-radius: 4px;
+        line-height: 1;
+    }
+
     footer {
         width: 100%;
         height: 100vh;
@@ -832,7 +1025,6 @@
 
     .footer__contents {
         position: absolute;
-        width: 420px;
         height: 80px;
         margin: auto;
         top: 0;
@@ -840,7 +1032,7 @@
         right: 0;
         left: 0;
         text-align: center;
-        color: #fff!important;
+        color: #fff !important;
     }
 
     .background_video {
