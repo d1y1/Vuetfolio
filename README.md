@@ -1,29 +1,37 @@
 # コンセプト CONCEPT
-かんたんに作れて更新の手間も抑えられるような
-ポートフォリオテンプレートを目指して作成しております。
-I wish creating and editing easy portfolio site.
-この経歴書はテンプレートはVue.jsで作成しており、
-dataとimageを用意するだけでいい感じのポートフォリオができます。
-This template made Vue.js.
-So, You only edit data and take images.
-また、なるべく1つのファイルで完結することを目指しています。
-これは多くレイヤーの方に使ってもらいたいからです。
-And, It is one file.
-Because, I wish to use many people.
-公開はgithub pagesを使用すると手軽かと思います。
-I recommend to use github pages.
-github pageでの公開手順はここをみるとよいと思います。
-Check about how to upload github pages.
-https://ferret-plus.com/5875
-(わかりにくい部分があれば気軽にissueなどでお知らせください。すぐに対応します。)
-(英語が間違ってたら気軽にissueとかでおしえてもらえるとありがたいです。。。)
-※ 個人情報の公開は危険であり、また外部向けのサービスではないプロジェクトをグローバルに公開すること禁止している場合があります。
-※ そのような場合は、auth機能を有効にする。もしくは記載を避けてください。
-※ auth機能に関しても簡易的な認証なので公開する場合は自己責任でお願いいたします。
+かんたんに作れて更新の手間も抑えられるような  
+ポートフォリオテンプレートを目指して作成しております。  
+I wish creating and editing easy portfolio site.  
+  
+この経歴書はテンプレートはVue.jsで作成しており、  
+dataとimageを用意するだけでいい感じのポートフォリオができます。  
+This template made Vue.js.  
+So, You only edit data and take images.  
+  
+また、なるべく1つのファイルで完結することを目指しています。  
+これは多くレイヤーの方に使ってもらいたいからです。  
+And, It is one file.  
+Because, I wish to use many people.  
+  
+公開はgithub pagesを使用すると手軽かと思います。  
+I recommend to use github pages.  
+  
+github pageでの公開手順はここをみるとよいと思います。  
+Check about how to upload github pages.  
+https://ferret-plus.com/5875  
+
+(わかりにくい部分があれば気軽にissueなどでお知らせください。すぐに対応します。)  
+(英語が間違ってたら気軽にissueとかでおしえてもらえるとありがたいです。。。)  
+
+※ 個人情報の公開は危険であり、また外部向けのサービスではないプロジェクトをグローバルに公開すること禁止している場合があります。  
+※ そのような場合は、auth機能を有効にする。もしくは記載を避けてください。  
+※ auth機能に関しても簡易的な認証なので公開する場合は自己責任でお願いいたします。  
+
 # サンプル SAMPLE
-このrepositoryはgithub pagesで公開しているので
-以下のurlで表示を確認いただけます。
-https://d1y1.github.io/Vuetfolio/
+このrepositoryはgithub pagesで公開しているので  
+以下のurlで表示を確認いただけます。  
+https://d1y1.github.io/Vuetfolio/  
+  
 # 使い方 HOT TO USE
 index.html内のdata.displayItemsを
 自分の経歴に書き換えてご利用ください。
